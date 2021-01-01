@@ -70,6 +70,7 @@ def backtest(
     figsize=(30, 15),
     data_class=None,
     data_kwargs={},
+    plot_kwargs={},
     fig=None,
     **kwargs,
 ):
@@ -113,6 +114,8 @@ def backtest(
         Custom backtrader database to be used as a parent class instead bt.feed. (default=None)
     data_kwargs : dict
         Datafeed keyword arguments (empty dict by default)
+    plot_kwargs : dict
+        Argument for function cerebro.plot() (empty dict by default)
     {0}
     """
     # Setting initial support for 1 cpu
@@ -187,6 +190,8 @@ def backtest(
     )
     cerebro.adddata(pd_data)
     cerebro.broker.setcash(init_cash)
+
+    # TODO: Change coc to False to see the difference
     # Allows us to set buy price based on next day closing
     # (technically impossible, but reasonable assuming you use all your money to buy market at the end of the next day)
     cerebro.broker.set_coc(True)
@@ -232,10 +237,11 @@ def backtest(
                 verbose=0,
                 sort_by=sort_by,
                 return_plot=return_plot,
+                plot_kwargs=plot_kwargs,
                 **optim_params,
             )
         else:
-            fig = plot_results(cerebro, data_format_dict, figsize)
+            fig = plot_results(cerebro, data_format_dict, figsize, **plot_kwargs)
     if return_history and return_plot:
         return sorted_combined_df, history_dict, fig
     elif return_history:
