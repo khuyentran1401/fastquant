@@ -28,6 +28,8 @@ class CustomIndicator(bt.Indicator):
     )
         
     plotinfo = dict(
+        plotname='',
+        subplot=True,
         plotymargin=0.15,
         plothlines=[0],
         plotyticks=[5, 95],
@@ -42,3 +44,5 @@ class CustomIndicator(bt.Indicator):
 
     def next(self):
         self.lines.custom[0] = getattr(self.datas[0], self.custom_column)[0]
+
+

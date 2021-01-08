@@ -71,7 +71,7 @@ def backtest(
     data_class=None,
     data_kwargs={},
     plot_kwargs={},
-    fig=None,
+    prediction_column='prediction',
     **kwargs,
 ):
     """Backtest financial data with a specified trading strategy

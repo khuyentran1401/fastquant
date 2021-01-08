@@ -38,6 +38,7 @@ class CustomStrategy(BaseStrategy):
         ("upper_limit", 95),
         ("lower_limit", 5),
         ("custom_column", "custom"),
+        ("prediction_column", "prediction")
     )
 
     def __init__(self):
@@ -46,10 +47,18 @@ class CustomStrategy(BaseStrategy):
         # Strategy level variables
         self.upper_limit = self.params.upper_limit
         self.lower_limit = self.params.lower_limit
+        self.prediction_column = self.params.prediction_column
+        self.prediction_indicator = CustomIndicator(
+            self.data, custom_column=self.prediction_column
+        )
+        self.prediction_indicator.plotinfo.subplot = False
+        self.prediction_indicator.plotinfo.plotname = 'Prediction'
+
         self.custom_column = self.params.custom_column
         self.custom_indicator = CustomIndicator(
             self.data, custom_column=self.custom_column,
         )
+
         # Plotting lines are based on the upper and lower limits
         self.custom_indicator.plotinfo.plotyticks = [
             self.lower_limit,

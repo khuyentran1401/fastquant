@@ -31,7 +31,7 @@ from fastquant.config import (
     SHORT_MAX,
 )
 
-
+from icecream import ic
 class BaseStrategy(bt.Strategy):
     """
     Base Strategy template for all strategies to be added to fastquant
@@ -67,6 +67,9 @@ class BaseStrategy(bt.Strategy):
         print("%s, %s" % (dt.isoformat(), txt))
 
     def update_order_history(self, order):
+        # * Fix error in executed sell price
+        order.executed.value = (-order.executed.price) * order.size
+
         self.order_history["dt"].append(self.datas[0].datetime.datetime(0))
         self.order_history["type"].append("buy" if order.isbuy() else "sell")
         self.order_history["price"].append(order.executed.price)
